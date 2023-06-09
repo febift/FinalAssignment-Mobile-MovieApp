@@ -16,42 +16,36 @@ import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
 
-public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
+public class TvShowAdapter extends RecyclerView.Adapter<TvShowAdapter.ViewHolder> {
     Context context;
-    private List<MovieModel> movies;
-
-    public MovieAdapter(Context context, List<MovieModel> movies) {
-        this.context = context;
-        this.movies = movies;
-    }
+    private List<TvShowModel> tvShows;
 
     @NonNull
     @Override
-    public MovieAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_grid, parent, false);
+    public TvShowAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_grid, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MovieAdapter.ViewHolder holder, int position) {
-        MovieModel movieModel = movies.get(position);
-        holder.tv_title.setText(movieModel.getTitle());
-        holder.tv_year.setText(movieModel.getRelease_date().substring(0, 4));
+    public void onBindViewHolder(@NonNull TvShowAdapter.ViewHolder holder, int position) {
+        TvShowModel tvShowModel = tvShows.get(position);
+        holder.tv_title.setText(tvShowModel.getName());
+        holder.tv_year.setText(tvShowModel.getFirst_air_date().substring(0, 4));
         Glide.with(holder.itemView.getContext())
-                .load("https://image.tmdb.org/t/p/w500/" + movieModel.getPoster_image())
+                .load("https://image.tmdb.org/t/p/w500/" + tvShowModel.getPoster_image())
                 .apply(new RequestOptions().override(350, 350))
                 .into(holder.iv_cover);
         holder.itemView.setOnClickListener(view -> {
             Intent intent = new Intent(holder.itemView.getContext(), DetailActivity.class);
-            intent.putExtra(DetailActivity.EXTRA_MOVIE, movieModel.getId());
+            intent.putExtra(DetailActivity.EXTRA_TVSHOW, tvShowModel.getId());
             holder.itemView.getContext().startActivity(intent);
         });
     }
 
     @Override
     public int getItemCount() {
-        return movies.size();
+        return tvShows.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -59,6 +53,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         TextView tv_title, tv_year, tv_rating;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+
             iv_cover = itemView.findViewById(R.id.iv_cover);
             tv_title = itemView.findViewById(R.id.tv_title);
             tv_year = itemView.findViewById(R.id.tv_year);
