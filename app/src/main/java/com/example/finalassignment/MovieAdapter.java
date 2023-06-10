@@ -1,6 +1,5 @@
 package com.example.finalassignment;
 
-import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +16,7 @@ import com.bumptech.glide.request.RequestOptions;
 import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
-//    Context context;
+
     private List<MovieModel> movies;
 
     public MovieAdapter(List<MovieModel> movies) {
@@ -46,6 +45,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             intent.putExtra(DetailActivity.EXTRA_MOVIE, movieModel.getId());
             holder.itemView.getContext().startActivity(intent);
         });
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(holder.itemView.getContext(), DetailActivity.class);
+            intent.putExtra(DetailActivity.EXTRA_MOVIE, movieModel);
+            holder.itemView.getContext().startActivity(intent);
+        });
+
     }
 
     @Override

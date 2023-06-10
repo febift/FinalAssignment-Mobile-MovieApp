@@ -1,8 +1,13 @@
 package com.example.finalassignment;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
-public class MovieModel {
+public class MovieModel implements Parcelable {
     @SerializedName("id")
     private int id;
     @SerializedName("title")
@@ -33,6 +38,33 @@ public class MovieModel {
         this.language = language;
         this.popularity = popularity;
     }
+
+    protected MovieModel(Parcel in) {
+        id = in.readInt();
+        title = in.readString();
+        backdrop_image = in.readString();
+        poster_image = in.readString();
+        release_date = in.readString();
+        if (in.readByte() == 0) {
+            rating = null;
+        } else {
+            rating = in.readFloat();
+        }
+        synopsis = in.readString();
+        language = in.readString();
+    }
+
+    public static final Creator<MovieModel> CREATOR = new Creator<MovieModel>() {
+        @Override
+        public MovieModel createFromParcel(Parcel in) {
+            return new MovieModel(in);
+        }
+
+        @Override
+        public MovieModel[] newArray(int size) {
+            return new MovieModel[size];
+        }
+    };
 
     public int getId() {
         return id;
@@ -104,5 +136,27 @@ public class MovieModel {
 
     public void setPopularity(Number popularity) {
         this.popularity = popularity;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeInt(id);
+        parcel.writeString(title);
+        parcel.writeString(backdrop_image);
+        parcel.writeString(poster_image);
+        parcel.writeString(release_date);
+        if (rating == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeFloat(rating);
+        }
+        parcel.writeString(synopsis);
+        parcel.writeString(language);
     }
 }

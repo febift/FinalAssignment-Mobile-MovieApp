@@ -1,8 +1,13 @@
 package com.example.finalassignment;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
-public class TvShowModel {
+public class TvShowModel implements Parcelable {
     @SerializedName("id")
     private int id;
     @SerializedName("name")
@@ -33,6 +38,34 @@ public class TvShowModel {
         this.language = language;
         this.popularity = popularity;
     }
+
+    protected TvShowModel(Parcel in) {
+        id = in.readInt();
+        name = in.readString();
+        backdrop_image = in.readString();
+        poster_image = in.readString();
+        first_air_date = in.readString();
+        if (in.readByte() == 0) {
+            rating = null;
+        } else {
+            rating = in.readFloat();
+        }
+        synopsis = in.readString();
+        language = in.readString();
+        popularity = in.readString();
+    }
+
+    public static final Creator<TvShowModel> CREATOR = new Creator<TvShowModel>() {
+        @Override
+        public TvShowModel createFromParcel(Parcel in) {
+            return new TvShowModel(in);
+        }
+
+        @Override
+        public TvShowModel[] newArray(int size) {
+            return new TvShowModel[size];
+        }
+    };
 
     public int getId() {
         return id;
@@ -104,6 +137,29 @@ public class TvShowModel {
 
     public void setPopularity(String popularity) {
         this.popularity = popularity;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeInt(id);
+        parcel.writeString(name);
+        parcel.writeString(backdrop_image);
+        parcel.writeString(poster_image);
+        parcel.writeString(first_air_date);
+        if (rating == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeFloat(rating);
+        }
+        parcel.writeString(synopsis);
+        parcel.writeString(language);
+        parcel.writeString(popularity);
     }
 }
 
