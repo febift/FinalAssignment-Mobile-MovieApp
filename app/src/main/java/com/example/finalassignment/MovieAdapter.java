@@ -17,11 +17,10 @@ import com.bumptech.glide.request.RequestOptions;
 import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
-    Context context;
+//    Context context;
     private List<MovieModel> movies;
 
-    public MovieAdapter(Context context, List<MovieModel> movies) {
-        this.context = context;
+    public MovieAdapter(List<MovieModel> movies) {
         this.movies = movies;
     }
 

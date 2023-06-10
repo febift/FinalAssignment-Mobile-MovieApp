@@ -2,63 +2,87 @@ package com.example.finalassignment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link TvShowFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class TvShowFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public TvShowFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment TvShowFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static TvShowFragment newInstance(String param1, String param2) {
-        TvShowFragment fragment = new TvShowFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+    private RecyclerView rv_tv_show;
+    private List<TvShowModel> tvShows;
+    private GridLayoutManager layoutManager;
+    private ProgressBar progressBar;
+    private TextView tv_no_internet;
+    private ImageView btn_retry;
+    private Handler handler;
+    MovieAdapter movieAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_tv_show, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        progressBar = view.findViewById(R.id.progress_bar);
+        tv_no_internet = view.findViewById(R.id.tv_no_internet);
+        btn_retry = view.findViewById(R.id.btn_retry);
+        rv_tv_show = view.findViewById(R.id.rv_tv_show);
+
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle("Tv Show");
+
+        rv_tv_show.setHasFixedSize(true);
+        rv_tv_show.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+
+        handler = new Handler(Looper.getMainLooper());
+        rv_tv_show.setVisibility(View.GONE);
+        tv_no_internet.setVisibility(View.GONE);
+        btn_retry.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+
+        Call<TvShowResponse> client = ApiConfig.getApiService().getTvShows(ApiConfig.getApiKey());
+        client.enqueue(new Callback<TvShowResponse>() {
+            @Override
+            public void onResponse(Call<TvShowResponse> call, Response<TvShowResponse> response) {
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        tvShows = response.body().getTvShows();
+                        TvShowAdapter adapter = new TvShowAdapter(tvShows);
+                        rv_tv_show.setAdapter(adapter);
+                        rv_tv_show.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.GONE);
+                    }
+                    if (response.body() != null) {
+                        Log.e("TvShowFragment", "OnFailure: " + response.message());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TvShowResponse> call, Throwable t) {
+
+            }
+        });
     }
 }

@@ -17,8 +17,11 @@ import com.bumptech.glide.request.RequestOptions;
 import java.util.List;
 
 public class TvShowAdapter extends RecyclerView.Adapter<TvShowAdapter.ViewHolder> {
-    Context context;
     private List<TvShowModel> tvShows;
+
+    public TvShowAdapter(List<TvShowModel> tvShows) {
+        this.tvShows = tvShows;
+    }
 
     @NonNull
     @Override
