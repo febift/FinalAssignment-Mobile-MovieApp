@@ -1,1 +1,1 @@
-# FinalAssihnment-Mobile-MovieApp
+# FinalAssignment-Mobile-MovieApp
