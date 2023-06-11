@@ -1,4 +1,7 @@
-package com.example.finalassignment;
+package com.example.finalassignment.Networking;
+
+import com.example.finalassignment.Response.MovieResponse;
+import com.example.finalassignment.Response.TvShowResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

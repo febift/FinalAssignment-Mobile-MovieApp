@@ -1,4 +1,4 @@
-package com.example.finalassignment;
+package com.example.finalassignment.Model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -7,17 +7,17 @@ import androidx.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 
-public class TvShowModel implements Parcelable {
+public class MovieModel implements Parcelable {
     @SerializedName("id")
     private int id;
-    @SerializedName("name")
-    private String name;
+    @SerializedName("title")
+    private String title;
     @SerializedName("backdrop_path")
     private String backdrop_image;
     @SerializedName("poster_path")
     private String poster_image;
-    @SerializedName("first_air_date")
-    private String first_air_date;
+    @SerializedName("release_date")
+    private String release_date;
     @SerializedName("vote_average")
     private Float rating;
     @SerializedName("overview")
@@ -25,26 +25,26 @@ public class TvShowModel implements Parcelable {
     @SerializedName("original_language")
     private String language;
     @SerializedName("popularity")
-    private String popularity;
+    private Number popularity;
 
-    public TvShowModel(int id, String name, String backdrop_image, String poster_image, String first_air_date, Float rating, String synopsis, String language, String popularity) {
+    public MovieModel(int id, String title, String backdrop_image, String poster_image, String release_date, Float rating, String synopsis, String language, Number popularity) {
         this.id = id;
-        this.name = name;
+        this.title = title;
         this.backdrop_image = backdrop_image;
         this.poster_image = poster_image;
-        this.first_air_date = first_air_date;
+        this.release_date = release_date;
         this.rating = rating;
         this.synopsis = synopsis;
         this.language = language;
         this.popularity = popularity;
     }
 
-    protected TvShowModel(Parcel in) {
+    protected MovieModel(Parcel in) {
         id = in.readInt();
-        name = in.readString();
+        title = in.readString();
         backdrop_image = in.readString();
         poster_image = in.readString();
-        first_air_date = in.readString();
+        release_date = in.readString();
         if (in.readByte() == 0) {
             rating = null;
         } else {
@@ -52,18 +52,17 @@ public class TvShowModel implements Parcelable {
         }
         synopsis = in.readString();
         language = in.readString();
-        popularity = in.readString();
     }
 
-    public static final Creator<TvShowModel> CREATOR = new Creator<TvShowModel>() {
+    public static final Creator<MovieModel> CREATOR = new Creator<MovieModel>() {
         @Override
-        public TvShowModel createFromParcel(Parcel in) {
-            return new TvShowModel(in);
+        public MovieModel createFromParcel(Parcel in) {
+            return new MovieModel(in);
         }
 
         @Override
-        public TvShowModel[] newArray(int size) {
-            return new TvShowModel[size];
+        public MovieModel[] newArray(int size) {
+            return new MovieModel[size];
         }
     };
 
@@ -75,12 +74,12 @@ public class TvShowModel implements Parcelable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getBackdrop_image() {
@@ -99,12 +98,12 @@ public class TvShowModel implements Parcelable {
         this.poster_image = poster_image;
     }
 
-    public String getFirst_air_date() {
-        return first_air_date;
+    public String getRelease_date() {
+        return release_date;
     }
 
-    public void setFirst_air_date(String first_air_date) {
-        this.first_air_date = first_air_date;
+    public void setRelease_date(String release_date) {
+        this.release_date = release_date;
     }
 
     public Float getRating() {
@@ -131,11 +130,11 @@ public class TvShowModel implements Parcelable {
         this.language = language;
     }
 
-    public String getPopularity() {
+    public Number getPopularity() {
         return popularity;
     }
 
-    public void setPopularity(String popularity) {
+    public void setPopularity(Number popularity) {
         this.popularity = popularity;
     }
 
@@ -147,10 +146,10 @@ public class TvShowModel implements Parcelable {
     @Override
     public void writeToParcel(@NonNull Parcel parcel, int i) {
         parcel.writeInt(id);
-        parcel.writeString(name);
+        parcel.writeString(title);
         parcel.writeString(backdrop_image);
         parcel.writeString(poster_image);
-        parcel.writeString(first_air_date);
+        parcel.writeString(release_date);
         if (rating == null) {
             parcel.writeByte((byte) 0);
         } else {
@@ -159,7 +158,5 @@ public class TvShowModel implements Parcelable {
         }
         parcel.writeString(synopsis);
         parcel.writeString(language);
-        parcel.writeString(popularity);
     }
 }
-

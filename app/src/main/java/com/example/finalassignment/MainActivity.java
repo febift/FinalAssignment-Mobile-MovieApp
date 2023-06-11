@@ -4,8 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.widget.ImageView;
+
+import com.example.finalassignment.Fragment.FavoriteFragment;
+import com.example.finalassignment.Fragment.MovieFragment;
+import com.example.finalassignment.Fragment.TvShowFragment;
 
 public class MainActivity extends AppCompatActivity {
     private ImageView btn_movie, btn_tv_show, btn_favorite;
@@ -53,4 +60,13 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-}
+
+    public boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnected();
+    }
+
+
+
+    }

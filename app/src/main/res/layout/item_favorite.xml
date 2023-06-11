@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="140dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:backgroundTint="@color/black"
     app:cardCornerRadius="4dp"
@@ -21,9 +21,11 @@
             android:layout_toRightOf="@id/iv_cover"
             android:text="Title"
             android:textColor="@color/white"
-            android:textSize="16dp"
+            android:textSize="20dp"
             android:textStyle="bold"
-            android:layout_marginStart="4dp"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="6dp"/>
         <TextView
             android:id="@+id/tv_year"
@@ -35,12 +37,12 @@
             android:textColor="@color/white"
             android:textSize="16dp"
             android:layout_marginTop="4dp"
-            android:layout_marginStart="4dp"/>
+            android:layout_marginStart="10dp"/>
         <ImageView
+            android:id="@+id/icon_item"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:src="@drawable/baseline_tv_24"
-            android:layout_below="@id/tv_year"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
             android:layout_marginEnd="4dp"

@@ -1,4 +1,4 @@
-package com.example.finalassignment;
+package com.example.finalassignment.Adapter;
 
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -12,57 +12,53 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.finalassignment.DetailActivity;
+import com.example.finalassignment.R;
+import com.example.finalassignment.Model.TvShowModel;
 
 import java.util.List;
 
-public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
+public class TvShowAdapter extends RecyclerView.Adapter<TvShowAdapter.ViewHolder> {
+    private List<TvShowModel> tvShows;
 
-    private List<MovieModel> movies;
-
-    public MovieAdapter(List<MovieModel> movies) {
-        this.movies = movies;
+    public TvShowAdapter(List<TvShowModel> tvShows) {
+        this.tvShows = tvShows;
     }
 
     @NonNull
     @Override
-    public MovieAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_grid, parent, false);
+    public TvShowAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_grid, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MovieAdapter.ViewHolder holder, int position) {
-        MovieModel movieModel = movies.get(position);
-        holder.tv_title.setText(movieModel.getTitle());
-        holder.tv_year.setText(movieModel.getRelease_date().substring(0, 4));
+    public void onBindViewHolder(@NonNull TvShowAdapter.ViewHolder holder, int position) {
+        TvShowModel tvShowModel = tvShows.get(position);
+        holder.tv_title.setText(tvShowModel.getName());
+        holder.tv_year.setText(tvShowModel.getFirst_air_date().substring(0, 4));
         Glide.with(holder.itemView.getContext())
-                .load("https://image.tmdb.org/t/p/w500/" + movieModel.getPoster_image())
+                .load("https://image.tmdb.org/t/p/w500/" + tvShowModel.getPoster_image())
                 .apply(new RequestOptions().override(350, 350))
                 .into(holder.iv_cover);
         holder.itemView.setOnClickListener(view -> {
             Intent intent = new Intent(holder.itemView.getContext(), DetailActivity.class);
-            intent.putExtra(DetailActivity.EXTRA_MOVIE, movieModel.getId());
+            intent.putExtra(DetailActivity.EXTRA_TVSHOW, tvShowModel);
             holder.itemView.getContext().startActivity(intent);
         });
-        holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(holder.itemView.getContext(), DetailActivity.class);
-            intent.putExtra(DetailActivity.EXTRA_MOVIE, movieModel);
-            holder.itemView.getContext().startActivity(intent);
-        });
-
     }
 
     @Override
     public int getItemCount() {
-        return movies.size();
+        return tvShows.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView iv_cover;
-        TextView tv_title, tv_year, tv_rating;
+        TextView tv_title, tv_year;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+
             iv_cover = itemView.findViewById(R.id.iv_cover);
             tv_title = itemView.findViewById(R.id.tv_title);
             tv_year = itemView.findViewById(R.id.tv_year);

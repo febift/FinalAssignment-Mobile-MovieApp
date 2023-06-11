@@ -1,5 +1,6 @@
-package com.example.finalassignment;
+package com.example.finalassignment.Response;
 
+import com.example.finalassignment.Model.TvShowModel;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
